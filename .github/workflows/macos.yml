@@ -251,6 +251,15 @@ jobs:
           if [ "$SKIP_SETUP" = true ]; then args+=(--skip-setup); fi
           ./unixnu build payload "${args[@]}"
 
+      - name: Upload the payload
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kebab-payload
+          path: |
+            out/*/payload/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Collect the text logs
         id: logs
         if: always() && steps.check.outcome == 'success'
