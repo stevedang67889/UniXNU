@@ -251,6 +251,24 @@ jobs:
           if [ "$SKIP_SETUP" = true ]; then args+=(--skip-setup); fi
           ./unixnu build payload "${args[@]}"
 
+      - name: Upload the userdata report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kebab-userdata-report
+          path: out/*/userdata/*.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload the userdata image
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kebab-userdata-image
+          path: out/*/userdata/userdata-root.img
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 1
       - name: Upload the payload
         uses: actions/upload-artifact@v4
         if: always()
